@@ -1,0 +1,1345 @@
+0001: <!DOCTYPE html>
+0002: <html lang="es" class="dark">
+0003: 
+0004: <head>
+0005:   <meta charset="UTF-8" />
+0006:   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+0007:   <title>CV Dilan Agustin Berriel Cardozo</title>
+0008:   <link rel="icon" type="image/png" href="logopaginas.png" />
+0009: 
+0010:   <!-- Fonts -->
+0011:   <link rel="preconnect" href="https://fonts.googleapis.com">
+0012:   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+0013:   <link
+0014:     href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Raleway:wght@300;600;800&display=swap"
+0015:     rel="stylesheet">
+0016: 
+0017:   <!-- Libraries -->
+0018:   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+0019:   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+0020:   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+0021:   <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+0022:   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+0023:   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+0024: 
+0025:   <style>
+0026:     :root {
+0027:       /* Dark Theme (Default) */
+0028:       --bg-color: #0a0a0f;
+0029:       --sidebar-bg: #111118;
+0030:       --accent: #c9a84c;
+0031:       --text-main: #f0f0f0;
+0032:       --text-muted: #a0a0ab;
+0033:       --shadow-color: rgba(0, 0, 0, 0.5);
+0034:       --border-color: rgba(201, 168, 76, 0.1);
+0035:     }
+0036: 
+0037:     :root.light {
+0038:       /* Light Theme */
+0039:       --bg-color: #f5f2ee;
+0040:       --sidebar-bg: #eae5dc;
+0041:       --accent: #c9a84c;
+0042:       --text-main: #1a1a1a;
+0043:       --text-muted: #5a5a6a;
+0044:       --shadow-color: rgba(0, 0, 0, 0.05);
+0045:       --border-color: rgba(201, 168, 76, 0.2);
+0046:     }
+0047: 
+0048:     * {
+0049:       box-sizing: border-box;
+0050:       margin: 0;
+0051:       padding: 0;
+0052:     }
+0053: 
+0054:     body {
+0055:       background-color: var(--bg-color);
+0056:       color: var(--text-main);
+0057:       font-family: 'DM Sans', sans-serif;
+0058:       transition: background-color 0.4s ease, color 0.4s ease;
+0059:       overflow-x: hidden;
+0060:       -webkit-font-smoothing: antialiased;
+0061:     }
+0062: 
+0063:     h1,
+0064:     h2,
+0065:     h3,
+0066:     h4,
+0067:     .title {
+0068:       font-family: 'Raleway', sans-serif;
+0069:     }
+0070: 
+0071:     .cv-container {
+0072:       display: flex;
+0073:       flex-wrap: wrap;
+0074:       max-width: 1200px;
+0075:       margin: 40px auto;
+0076:       min-height: 90vh;
+0077:       box-shadow: 0 25px 50px -12px var(--shadow-color);
+0078:       border-radius: 24px;
+0079:       overflow: hidden;
+0080:       background-color: var(--bg-color);
+0081:       transition: background-color 0.4s ease;
+0082:       position: relative;
+0083:     }
+0084: 
+0085:     .full-width-section {
+0086:       width: 100%;
+0087:       padding: 40px 60px 50px;
+0088:       background-color: var(--bg-color);
+0089:       border-top: 1px solid var(--border-color);
+0090:     }
+0091: 
+0092:     .sidebar {
+0093:       width: 32%;
+0094:       background-color: var(--sidebar-bg);
+0095:       color: #f0f0f0;
+0096:       padding: 50px 40px;
+0097:       display: flex;
+0098:       flex-direction: column;
+0099:       gap: 40px;
+0100:       position: relative;
+0101:       z-index: 10;
+0102:     }
+0103: 
+0104:     .light .sidebar {
+0105:       color: #1a1a1a;
+0106:     }
+0107: 
+0108:     .light .info-item {
+0109:       color: #3a3a4a;
+0110:     }
+0111: 
+0112:     .light .info-item:hover {
+0113:       color: #1a1a1a;
+0114:     }
+0115: 
+0116:     .main-content {
+0117:       width: 68%;
+0118:       padding: 60px 80px;
+0119:       display: flex;
+0120:       flex-direction: column;
+0121:       gap: 50px;
+0122:       position: relative;
+0123:     }
+0124: 
+0125:     /* Foto con borde dorado giratorio */
+0126:     .profile-wrapper {
+0127:       position: relative;
+0128:       width: 200px;
+0129:       height: 200px;
+0130:       margin: 0 auto;
+0131:       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+0132:     }
+0133: 
+0134:     .profile-wrapper:hover {
+0135:       transform: scale(1.05) !important;
+0136:     }
+0137: 
+0138:     .profile-border {
+0139:       position: absolute;
+0140:       inset: -4px;
+0141:       border-radius: 50%;
+0142:       background: conic-gradient(from 0deg, transparent 0%, var(--accent) 50%, transparent 100%);
+0143:       animation: rotateBorder 4s linear infinite;
+0144:     }
+0145: 
+0146:     .profile-inner {
+0147:       position: absolute;
+0148:       inset: 0;
+0149:       background-color: var(--sidebar-bg);
+0150:       border-radius: 50%;
+0151:       overflow: hidden;
+0152:       display: flex;
+0153:       align-items: center;
+0154:       justify-content: center;
+0155:       border: 3px solid var(--sidebar-bg);
+0156:     }
+0157: 
+0158:     .profile-inner img {
+0159:       width: 100%;
+0160:       height: 100%;
+0161:       object-fit: cover;
+0162:     }
+0163: 
+0164:     @keyframes rotateBorder {
+0165:       from {
+0166:         transform: rotate(0deg);
+0167:       }
+0168: 
+0169:       to {
+0170:         transform: rotate(360deg);
+0171:       }
+0172:     }
+0173: 
+0174:     .section-title {
+0175:       font-size: 1.1rem;
+0176:       font-weight: 800;
+0177:       text-transform: uppercase;
+0178:       letter-spacing: 2px;
+0179:       color: var(--accent);
+0180:       margin-bottom: 20px;
+0181:       display: flex;
+0182:       align-items: center;
+0183:       gap: 15px;
+0184:     }
+0185: 
+0186:     .section-title::after {
+0187:       content: '';
+0188:       flex: 1;
+0189:       height: 1px;
+0190:       background-color: var(--border-color);
+0191:     }
+0192: 
+0193:     .sidebar .section-title::after {
+0194:       background-color: rgba(201, 168, 76, 0.2);
+0195:     }
+0196: 
+0197:     .info-list {
+0198:       list-style: none;
+0199:       display: flex;
+0200:       flex-direction: column;
+0201:       gap: 16px;
+0202:     }
+0203: 
+0204:     .info-item {
+0205:       display: flex;
+0206:       align-items: flex-start;
+0207:       gap: 12px;
+0208:       font-size: 0.95rem;
+0209:       font-weight: 400;
+0210:       color: #d0d0d8;
+0211:       line-height: 1.5;
+0212:       transition: color 0.3s ease, transform 0.3s ease;
+0213:       cursor: default;
+0214:     }
+0215: 
+0216:     .info-item:hover {
+0217:       color: #ffffff;
+0218:       transform: translateX(5px) !important;
+0219:     }
+0220: 
+0221:     .info-item svg {
+0222:       width: 18px;
+0223:       height: 18px;
+0224:       fill: none;
+0225:       stroke: var(--accent);
+0226:       stroke-width: 2;
+0227:       stroke-linecap: round;
+0228:       stroke-linejoin: round;
+0229:       flex-shrink: 0;
+0230:       margin-top: 2px;
+0231:     }
+0232: 
+0233:     /* Skills as Tags */
+0234:     .skills-container {
+0235:       display: flex;
+0236:       flex-wrap: wrap;
+0237:       gap: 12px;
+0238:       margin-top: 10px;
+0239:     }
+0240: 
+0241:     .skill-tag {
+0242:       background-color: rgba(255, 255, 255, 0.03);
+0243:       border: 1px solid rgba(201, 168, 76, 0.4);
+0244:       color: var(--text-main);
+0245:       padding: 8px 16px;
+0246:       border-radius: 20px;
+0247:       font-size: 0.9rem;
+0248:       font-weight: 500;
+0249:       transition: all 0.3s ease;
+0250:     }
+0251: 
+0252:     .skill-tag:hover {
+0253:       background-color: var(--accent);
+0254:       color: #000;
+0255:       border-color: var(--accent);
+0256:       transform: translateY(-2px);
+0257:       box-shadow: 0 5px 15px rgba(201, 168, 76, 0.3);
+0258:     }
+0259: 
+0260:     /* Portfolio Gallery */
+0261:     .gallery-masonry {
+0262:       column-count: 3;
+0263:       column-gap: 20px;
+0264:     }
+0265: 
+0266:     @media (max-width: 900px) {
+0267:       .gallery-masonry {
+0268:         column-count: 2;
+0269:       }
+0270:     }
+0271: 
+0272:     @media (max-width: 500px) {
+0273:       .gallery-masonry {
+0274:         column-count: 1;
+0275:       }
+0276:     }
+0277: 
+0278:     .gallery-item {
+0279:       break-inside: avoid;
+0280:       margin-bottom: 20px;
+0281:     }
+0282: 
+0283:     .gallery-item img {
+0284:       width: 100%;
+0285:       height: auto;
+0286:       display: block;
+0287:       border-radius: 12px;
+0288:       border: 1px solid var(--border-color);
+0289:       transition: transform 0.3s ease, box-shadow 0.3s ease;
+0290:     }
+0291: 
+0292:     .gallery-item img:hover {
+0293:       transform: scale(1.02);
+0294:       box-shadow: 0 8px 24px rgba(201, 168, 76, 0.2);
+0295:     }
+0296: 
+0297:     /* Header Main */
+0298:     .name {
+0299:       font-size: 3.5rem;
+0300:       font-weight: 300;
+0301:       line-height: 1.1;
+0302:       margin-bottom: 12px;
+0303:     }
+0304: 
+0305:     .name strong {
+0306:       font-weight: 800;
+0307:     }
+0308: 
+0309:     .profession {
+0310:       font-size: 1.1rem;
+0311:       color: var(--accent);
+0312:       font-weight: 800;
+0313:       letter-spacing: 4px;
+0314:       text-transform: uppercase;
+0315:     }
+0316: 
+0317:     .profile-text {
+0318:       color: var(--text-muted);
+0319:       line-height: 1.8;
+0320:       font-weight: 400;
+0321:       font-size: 1.05rem;
+0322:       max-width: 95%;
+0323:       margin-top: 20px;
+0324:       transition: color 0.4s ease;
+0325:     }
+0326: 
+0327:     /* Timeline */
+0328:     .timeline {
+0329:       position: relative;
+0330:       padding-left: 30px;
+0331:       margin-top: 10px;
+0332:     }
+0333: 
+0334:     .timeline::before {
+0335:       content: '';
+0336:       position: absolute;
+0337:       top: 0;
+0338:       left: 0;
+0339:       width: 1px;
+0340:       height: 100%;
+0341:       background: linear-gradient(to bottom, var(--accent) 0%, rgba(201, 168, 76, 0.1) 100%);
+0342:     }
+0343: 
+0344:     .timeline-item {
+0345:       position: relative;
+0346:       margin-bottom: 35px;
+0347:       padding: 24px 30px;
+0348:       border-radius: 12px;
+0349:       background-color: rgba(255, 255, 255, 0.02);
+0350:       border: 1px solid var(--border-color);
+0351:       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+0352:       cursor: default;
+0353:     }
+0354: 
+0355:     .timeline-item:hover {
+0356:       transform: translateY(-5px) scale(1.02) !important;
+0357:       background-color: rgba(255, 255, 255, 0.05);
+0358:       border-color: rgba(201, 168, 76, 0.5);
+0359:       box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(201, 168, 76, 0.2);
+0360:     }
+0361: 
+0362:     .light .timeline-item {
+0363:       background-color: #ffffff;
+0364:     }
+0365: 
+0366:     .light .timeline-item:hover {
+0367:       background-color: #fafafa;
+0368:       box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1), 0 0 15px rgba(201, 168, 76, 0.3);
+0369:     }
+0370: 
+0371:     .timeline-dot {
+0372:       position: absolute;
+0373:       left: -35.5px;
+0374:       top: 30px;
+0375:       width: 12px;
+0376:       height: 12px;
+0377:       border-radius: 50%;
+0378:       background-color: var(--accent);
+0379:       border: 3px solid var(--bg-color);
+0380:       box-shadow: 0 0 0 2px var(--accent);
+0381:       transition: border-color 0.4s ease;
+0382:     }
+0383: 
+0384:     .timeline-date {
+0385:       font-size: 0.85rem;
+0386:       color: var(--accent);
+0387:       font-weight: 800;
+0388:       margin-bottom: 6px;
+0389:       letter-spacing: 1px;
+0390:       text-transform: uppercase;
+0391:     }
+0392: 
+0393:     .timeline-title {
+0394:       font-size: 1.25rem;
+0395:       font-weight: 600;
+0396:       margin-bottom: 4px;
+0397:       color: var(--text-main);
+0398:     }
+0399: 
+0400:     .timeline-subtitle {
+0401:       font-size: 0.95rem;
+0402:       color: var(--text-muted);
+0403:       margin-bottom: 12px;
+0404:       font-weight: 500;
+0405:     }
+0406: 
+0407:     .timeline-desc {
+0408:       font-size: 0.95rem;
+0409:       line-height: 1.6;
+0410:       color: var(--text-muted);
+0411:     }
+0412: 
+0413:     /* Expandable Item Styles */
+0414:     .expandable-trigger {
+0415:       cursor: pointer;
+0416:       display: flex;
+0417:       justify-content: space-between;
+0418:       align-items: center;
+0419:     }
+0420: 
+0421:     .expandable-icon {
+0422:       width: 20px;
+0423:       height: 20px;
+0424:       fill: none;
+0425:       stroke: var(--accent);
+0426:       stroke-width: 2.5;
+0427:       transition: transform 0.3s ease;
+0428:     }
+0429: 
+0430:     .expandable-content {
+0431:       overflow: hidden;
+0432:       margin-top: 15px;
+0433:       padding-top: 15px;
+0434:       border-top: 1px solid rgba(201, 168, 76, 0.15);
+0435:     }
+0436: 
+0437:     .sub-item {
+0438:       margin-bottom: 20px;
+0439:       padding-left: 15px;
+0440:       border-left: 2px solid rgba(201, 168, 76, 0.2);
+0441:     }
+0442: 
+0443:     .sub-item:last-child {
+0444:       margin-bottom: 0;
+0445:     }
+0446: 
+0447:     .sub-item-date {
+0448:       font-size: 0.8rem;
+0449:       color: var(--accent);
+0450:       font-weight: 700;
+0451:       margin-bottom: 2px;
+0452:     }
+0453: 
+0454:     .sub-item-title {
+0455:       font-size: 0.95rem;
+0456:       font-weight: 600;
+0457:       color: var(--text-main);
+0458:       margin-bottom: 4px;
+0459:     }
+0460: 
+0461:     .sub-item-desc {
+0462:       font-size: 0.85rem;
+0463:       color: var(--text-muted);
+0464:       line-height: 1.4;
+0465:     }
+0466: 
+0467:     /* Actions */
+0468:     .actions-container {
+0469:       position: absolute;
+0470:       top: 30px;
+0471:       right: 30px;
+0472:       display: flex;
+0473:       gap: 15px;
+0474:       z-index: 100;
+0475:       opacity: 0;
+0476:       /* Animated in react */
+0477:     }
+0478: 
+0479:     .icon-button {
+0480:       background: rgba(255, 255, 255, 0.05);
+0481:       backdrop-filter: blur(10px);
+0482:       border: 1px solid var(--border-color);
+0483:       border-radius: 50%;
+0484:       width: 44px;
+0485:       height: 44px;
+0486:       display: flex;
+0487:       align-items: center;
+0488:       justify-content: center;
+0489:       cursor: pointer;
+0490:       color: var(--text-main);
+0491:       transition: all 0.3s ease;
+0492:     }
+0493: 
+0494:     .light .icon-button {
+0495:       background: #fff;
+0496:     }
+0497: 
+0498:     .icon-button:hover {
+0499:       background: var(--accent);
+0500:       color: #fff;
+0501:       transform: translateY(-2px);
+0502:       box-shadow: 0 5px 15px rgba(201, 168, 76, 0.3);
+0503:     }
+0504: 
+0505:     .icon-button svg {
+0506:       width: 20px;
+0507:       height: 20px;
+0508:       fill: currentColor;
+0509:     }
+0510: 
+0511:     /* Print/PDF mode */
+0512:     @page {
+0513:       margin: 0;
+0514:     }
+0515: 
+0516:     @media print {
+0517:       body {
+0518:         margin: 0;
+0519:         background-color: var(--bg-color) !important;
+0520:         -webkit-print-color-adjust: exact;
+0521:         print-color-adjust: exact;
+0522:       }
+0523: 
+0524:       .cv-container {
+0525:         box-shadow: none !important;
+0526:         margin: 0 !important;
+0527:         border-radius: 0 !important;
+0528:         max-width: none !important;
+0529:       }
+0530: 
+0531:       .actions-container {
+0532:         display: none !important;
+0533:       }
+0534:     }
+0535: 
+0536:     /* Custom PDF class for html2canvas */
+0537:     .pdf-render {
+0538:       border-radius: 0 !important;
+0539:       box-shadow: none !important;
+0540:       margin: 0 !important;
+0541:       transform: none !important;
+0542:     }
+0543: 
+0544:     /* Creator Watermark */
+0545:     .creator-watermark {
+0546:       position: fixed;
+0547:       bottom: 22px;
+0548:       right: 22px;
+0549:       z-index: 9999;
+0550:       display: flex;
+0551:       flex-direction: column;
+0552:       align-items: center;
+0553:       gap: 8px;
+0554:       opacity: 0.55;
+0555:       transition: opacity 0.35s ease, transform 0.35s ease;
+0556:       pointer-events: auto;
+0557:     }
+0558: 
+0559:     .creator-watermark:hover {
+0560:       opacity: 1;
+0561:       transform: translateY(-3px);
+0562:     }
+0563: 
+0564:     .creator-signature {
+0565:       height: 36px;
+0566:       width: auto;
+0567:       object-fit: contain;
+0568:       filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+0569:     }
+0570: 
+0571:     .creator-socials {
+0572:       display: flex;
+0573:       gap: 10px;
+0574:       align-items: center;
+0575:     }
+0576: 
+0577:     .creator-social-link {
+0578:       display: flex;
+0579:       align-items: center;
+0580:       justify-content: center;
+0581:       width: 30px;
+0582:       height: 30px;
+0583:       border-radius: 50%;
+0584:       background: rgba(255, 255, 255, 0.08);
+0585:       backdrop-filter: blur(8px);
+0586:       border: 1px solid rgba(255, 255, 255, 0.15);
+0587:       transition: all 0.3s ease;
+0588:       text-decoration: none;
+0589:     }
+0590: 
+0591:     .creator-social-link:hover {
+0592:       background: rgba(255, 255, 255, 0.2);
+0593:       transform: scale(1.15);
+0594:       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+0595:     }
+0596: 
+0597:     .creator-social-link svg {
+0598:       width: 16px;
+0599:       height: 16px;
+0600:     }
+0601: 
+0602:     @media print {
+0603:       .creator-watermark {
+0604:         display: none !important;
+0605:       }
+0606:     }
+0607: 
+0608:     /* --- Responsive Styles --- */
+0609:     @media (max-width: 992px) {
+0610:       /* Mobile Reordering Logic */
+0611:       .cv-container {
+0612:         display: flex;
+0613:         flex-direction: column;
+0614:       }
+0615:       .sidebar {
+0616:         display: flex;
+0617:         flex-direction: column;
+0618:         order: 1;
+0619:       }
+0620:       .main-content {
+0621:         order: 2; /* Professional Experience comes after profile/contact */
+0622:       }
+0623:       
+0624:       /* Specific Sidebar segments */
+0625:       .sidebar > .profile-wrapper { order: 1; }
+0626:       .sidebar > .header-mobile { order: 2; }
+0627:       .sidebar > .info-list { order: 3; } /* Contact info */
+0628:       .sidebar > div:not(.profile-wrapper):not(.header-mobile):not(.info-list) { order: 4; } /* Skills... */
+0629: 
+0630:       .cv-container {
+0631:         margin: 20px;
+0632:         flex-direction: column;
+0633:         border-radius: 16px;
+0634:       }
+0635: 
+0636:       .sidebar {
+0637:         width: 100%;
+0638:         padding: 40px 30px;
+0639:         gap: 20px;
+0640:         text-align: center;
+0641:       }
+0642: 
+0643:       .main-content {
+0644:         width: 100%;
+0645:         padding: 40px 30px;
+0646:         gap: 40px;
+0647:       }
+0648: 
+0649:       .profile-wrapper {
+0650:         width: 160px;
+0651:         height: 160px;
+0652:         margin: 0 auto 10px auto;
+0653:       }
+0654: 
+0655:       .header-desktop {
+0656:         display: none !important;
+0657:       }
+0658: 
+0659:       .header-mobile {
+0660:         display: block !important;
+0661:         margin-top: 10px;
+0662:         text-align: center;
+0663:       }
+0664: 
+0665:       .name {
+0666:         font-size: 2.2rem;
+0667:         text-align: center;
+0668:       }
+0669: 
+0670:       .profession {
+0671:         font-size: 0.9rem;
+0672:         letter-spacing: 2px;
+0673:         text-align: center;
+0674:         margin-top: 8px;
+0675:       }
+0676: 
+0677:       .profile-text {
+0678:         text-align: center;
+0679:         margin: 15px auto 0;
+0680:         max-width: 100%;
+0681:       }
+0682: 
+0683:       .full-width-section {
+0684:         padding: 30px 20px;
+0685:       }
+0686: 
+0687:       .actions-container {
+0688:         top: 15px;
+0689:         right: 15px;
+0690:         gap: 10px;
+0691:       }
+0692: 
+0693:       .icon-button {
+0694:         width: 38px;
+0695:         height: 38px;
+0696:       }
+0697: 
+0698:       .icon-button svg {
+0699:         width: 18px;
+0700:         height: 18px;
+0701:       }
+0702:     }
+0703: 
+0704:     .header-mobile {
+0705:       display: none;
+0706:     }
+0707: 
+0708:     .header-desktop {
+0709:       display: block;
+0710:     }
+0711: 
+0712:     @media (max-width: 600px) {
+0713:       .cv-container {
+0714:         margin: 10px;
+0715:         border-radius: 12px;
+0716:       }
+0717: 
+0718:       .name {
+0719:         font-size: 1.8rem;
+0720:       }
+0721: 
+0722:       .profile-text {
+0723:         font-size: 0.95rem;
+0724:       }
+0725: 
+0726:       .timeline-item {
+0727:         padding: 20px;
+0728:       }
+0729: 
+0730:       .timeline-dot {
+0731:         left: -32.5px;
+0732:       }
+0733:       
+0734:       .creator-watermark {
+0735:         bottom: 15px;
+0736:         right: 15px;
+0737:         scale: 0.8;
+0738:       }
+0739:     }
+0740: 
+0741:     /* PDF Generation Overlay */
+0742:     .pdf-overlay {
+0743:       position: fixed;
+0744:       inset: 0;
+0745:       background: rgba(0, 0, 0, 0.7);
+0746:       backdrop-filter: blur(5px);
+0747:       z-index: 1000;
+0748:       display: flex;
+0749:       align-items: center;
+0750:       justify-content: center;
+0751:       color: #fff;
+0752:       font-weight: 600;
+0753:       letter-spacing: 1px;
+0754:     }
+0755:   </style>
+0756: </head>
+0757: 
+0758: <body>
+0759:   <div id="root"></div>
+0760: 
+0761:   <script type="text/babel" data-type="module">
+0762:     const { useState, useEffect, useRef } = React;
+0763:     const { motion, AnimatePresence } = window.Motion;
+0764: 
+0765:     // --- Icons ---
+0766:     const SunIcon = () => (
+0767:       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+0768:         <circle cx="12" cy="12" r="5" strokeWidth="2" stroke="currentColor" fill="none" />
+0769:         <path strokeWidth="2" stroke="currentColor" strokeLinecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+0770:       </svg>
+0771:     );
+0772: 
+0773:     const MoonIcon = () => (
+0774:       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+0775:         <path strokeWidth="2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" fill="none" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+0776:       </svg>
+0777:     );
+0778: 
+0779:     const DownloadIcon = () => (
+0780:       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+0781:         <path strokeWidth="2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" fill="none" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+0782:       </svg>
+0783:     );
+0784: 
+0785:     const PhoneIcon = () => (
+0786:       <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
+0787:     );
+0788: 
+0789:     const MailIcon = () => (
+0790:       <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
+0791:     );
+0792: 
+0793:     const LocationIcon = () => (
+0794:       <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
+0795:     );
+0796: 
+0797:     const CalendarIcon = () => (
+0798:       <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+0799:     );
+0800: 
+0801:     // --- Data ---
+0802:     const INFO = {
+0803:       name: "Dilan Agustin Berriel Cardozo",
+0804:       shortName: "Dilan Berriel",
+0805:       title: "Modelo Publicitario · Actor",
+0806:       dob: "08/03/2005",
+0807:       nationality: "Estadounidense / Uruguayo",
+0808:       phone: "093623492",
+0809:       mail: "dilanberriel18@gmail.com",
+0810:       address: "Emancipación 4375, Block A atp.008",
+0811:       profile: "Me considero una persona organizada y responsable. Siempre tengo la mejor disposición para la realización de mis labores. Me manejo de buena manera en PC y me gusta hacer contenido en redes sociales. Estoy dispuesto a seguir aprendiendo en la labor que se necesite.",
+0812: [LONG LINE REDACTED, length=238485]
+0813:       experience: [
+0814:         {
+0815:           id: 1,
+0816:           date: "Junio - Octubre 2025",
+0817:           title: "Atención al Cliente y Depósito",
+0818:           subtitle: "TyT Martini Ferretería",
+0819:           desc: "Orden y limpieza de depósito, reposición, atención al cliente y armado de pedidos."
+0820:         },
+0821:         {
+0822:           id: 8,
+0823:           date: "Junio 2024 - Actualidad",
+0824:           title: "Actor · Extra · Modelo Publicitario",
+0825:           subtitle: "Varios Proyectos",
+0826:           desc: "Haga clic para ver detalles de mis participaciones.",
+0827:           isExpandable: true,
+0828:           subItems: [
+0829:             { date: "Mayo - Junio 2025", title: "Kaia | Serie de TV", desc: "Participación como extra en serie de televisión para la producción Kaia." },
+0830:             { date: "02/04/2025 - 02/05/2025", title: "BARRADAS | Serie de TV", desc: "Participación como extra en serie de televisión para la producción BARRADAS." },
+0831:             { date: "28/01/2025 - 28/02/2025", title: "Movistar", desc: "Participación y figura en spot publicitario de Movistar." },
+0832:             { date: "Julio 2024 - Actualidad", title: "Independiente", desc: "Múltiples participaciones en proyectos independientes publicitarios." },
+0833:             { date: "Junio - Julio 2024", title: "Barra Brava | Serie de TV", desc: "Participación como extra en serie de televisión Barra Brava." }
+0834:           ]
+0835:         },
+0836:         {
+0837:           id: 7,
+0838:           date: "Enero - Marzo 2023",
+0839:           title: "Asistente en Construcción",
+0840:           subtitle: "Independiente",
+0841:           desc: "Realización de tareas con supervisión: pinturas y cargamento general."
+0842:         }
+0843:       ],
+0844:       education: [
+0845:         {
+0846:           id: 1,
+0847:           date: "Actualmente",
+0848:           title: "Ciclo Básico (Turno Nocturno)",
+0849:           subtitle: "Liceo n°38",
+0850:           desc: "Cursando estudios de ciclo básico en horario nocturno para compatibilizar con horarios laborales."
+0851:         },
+0852:         {
+0853:           id: 2,
+0854:           date: "2018",
+0855:           title: "Educación Primaria",
+0856:           subtitle: "Escuela n°115",
+0857:           desc: "Enseñanza primaria completa."
+0858:         }
+0859:       ],
+0860:       skills: [
+0861:         { name: "Photopea", level: 90 },
+0862:         { name: "Capcut", level: 95 },
+0863:         { name: "Edición de PC", level: 85 },
+0864:         { name: "Contenido RRSS", level: 90 }
+0865:       ],
+0866:       courses: [
+0867:         { name: "Revestimiento para pisos", entity: "INEFOP", status: "Aprobado" }
+0868:       ],
+0869:       references: [
+0870:         { name: "Mathias Di Martini", role: "Encargado TyT Martini", phone: "098547434" },
+0871:         { name: "Sebastian Ponce", role: "Docente de Revestimiento", phone: "098932184" }
+0872:       ],
+0873:       portfolio: [
+0874: [LONG LINE REDACTED, length=290933]
+0875: [LONG LINE REDACTED, length=40053]
+0876: [LONG LINE REDACTED, length=298577]
+0877: [LONG LINE REDACTED, length=700181]
+0878: [LONG LINE REDACTED, length=1470130]
+0879:       ]
+0880:     };
+0881: 
+0882:     // --- Components ---
+0883:     const HeaderInfo = ({ className }) => {
+0884:       const nameParts = INFO.name.split(" ");
+0885:       return (
+0886:         <div className={className}>
+0887:           <motion.div initial="hidden" animate="show" variants={{
+0888:             hidden: { opacity: 0 },
+0889:             show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+0890:           }}>
+0891:             <h1 className="name">
+0892:               <motion.strong variants={{ hidden: { opacity: 0, letterSpacing: "-5px" }, show: { opacity: 1, letterSpacing: "0px", transition: { duration: 0.8 } } }}>
+0893:                 {nameParts[0]}
+0894:               </motion.strong>
+0895:               <motion.strong variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.8 } } }}>
+0896:                 {" " + nameParts.slice(1).join(" ")}
+0897:               </motion.strong>
+0898:             </h1>
+0899:             <motion.div
+0900:               variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.4 } } }}
+0901:               className="profession"
+0902:             >
+0903:               {INFO.title}
+0904:             </motion.div>
+0905: 
+0906:             <motion.p
+0907:               variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 1, delay: 0.6 } } }}
+0908:               className="profile-text"
+0909:             >
+0910:               {INFO.profile}
+0911:             </motion.p>
+0912:           </motion.div>
+0913:         </div>
+0914:       );
+0915:     };
+0916: 
+0917:     const Sidebar = () => {
+0918:       const containerVariants = {
+0919:         hidden: { opacity: 0 },
+0920:         show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+0921:       };
+0922: 
+0923:       const itemVariants = {
+0924:         hidden: { opacity: 0, x: -20 },
+0925:         show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
+0926:       };
+0927: 
+0928:       return (
+0929:         <div className="sidebar">
+0930:           <motion.div
+0931:             initial={{ scale: 0.8, opacity: 0 }}
+0932:             animate={{ scale: 1, opacity: 1 }}
+0933:             transition={{ duration: 0.8, ease: "easeOut" }}
+0934:             className="profile-wrapper"
+0935:           >
+0936:             <div className="profile-border"></div>
+0937:             <div className="profile-inner">
+0938:               <img src={INFO.profileImage} alt="Dilan Berriel Profile" />
+0939:             </div>
+0940:           </motion.div>
+0941: 
+0942:           <HeaderInfo className="header-mobile" />
+0943: 
+0944:           <motion.div variants={containerVariants} initial="hidden" animate="show" className="info-list">
+0945:             <h3 className="section-title">Contacto</h3>
+0946:             <motion.li variants={itemVariants} className="info-item">
+0947:               <a href={`https://wa.me/59893623492`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'inherit', textDecoration: 'none' }}>
+0948:                 <PhoneIcon /> {INFO.phone}
+0949:               </a>
+0950:             </motion.li>
+0951:             <motion.li variants={itemVariants} className="info-item">
+0952:               <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${INFO.mail}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'inherit', textDecoration: 'none' }}>
+0953:                 <MailIcon /> {INFO.mail}
+0954:               </a>
+0955:             </motion.li>
+0956:             <motion.li variants={itemVariants} className="info-item">
+0957:               <LocationIcon /> {INFO.address}
+0958:             </motion.li>
+0959:             <motion.li variants={itemVariants} className="info-item" style={{ marginTop: '10px' }}>
+0960:               <CalendarIcon /> Nacimiento: {INFO.dob}
+0961:             </motion.li>
+0962:             <motion.li variants={itemVariants} className="info-item">
+0963:               <LocationIcon /> {INFO.nationality}
+0964:             </motion.li>
+0965:           </motion.div>
+0966:           
+0967:           {/* rest of sidebar unchanged... */}
+0968:           <motion.div variants={containerVariants} initial="hidden" animate="show" style={{ marginTop: '10px' }}>
+0969:             <h3 className="section-title">Programas</h3>
+0970:             <div className="skills-container">
+0971:               {INFO.skills.map((skill, index) => (
+0972:                 <motion.span variants={itemVariants} key={index} className="skill-tag">
+0973:                   {skill.name}
+0974:                 </motion.span>
+0975:               ))}
+0976:             </div>
+0977:           </motion.div>
+0978: 
+0979:           <motion.div variants={containerVariants} initial="hidden" animate="show">
+0980:             <h3 className="section-title">Educación</h3>
+0981:             {INFO.education.map((edu, idx) => (
+0982:               <motion.div variants={itemVariants} key={idx} style={{ marginBottom: '15px' }}>
+0983:                 <div style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '2px' }}>{edu.title}</div>
+0984:                 <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '2px' }}>{edu.subtitle}</div>
+0985:                 <div style={{ fontSize: '0.8rem', color: 'var(--accent)' }}>{edu.date}</div>
+0986:               </motion.div>
+0987:             ))}
+0988:           </motion.div>
+0989: 
+0990:           <motion.div variants={containerVariants} initial="hidden" animate="show">
+0991:             <h3 className="section-title">Cursos</h3>
+0992:             {INFO.courses.map((course, idx) => (
+0993:               <motion.div variants={itemVariants} key={idx} style={{ marginBottom: '15px' }}>
+0994:                 <div style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '4px' }}>{course.name}</div>
+0995:                 <div style={{ fontSize: '0.9rem', color: 'var(--accent)' }}>{course.entity} - {course.status}</div>
+0996:               </motion.div>
+0997:             ))}
+0998:           </motion.div>
+0999: 
+1000:           <motion.div variants={containerVariants} initial="hidden" animate="show">
+1001:             <h3 className="section-title">Referencias</h3>
+1002:             {INFO.references.map((ref, idx) => (
+1003:               <motion.div variants={itemVariants} key={idx} style={{ marginBottom: '15px' }}>
+1004:                 <div style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '4px' }}>{ref.name}</div>
+1005:                 <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '2px' }}>{ref.role}</div>
+1006:                 <div style={{ fontSize: '0.9rem', color: 'var(--accent)' }}>{ref.phone}</div>
+1007:               </motion.div>
+1008:             ))}
+1009:           </motion.div>
+1010:         </div>
+1011:       );
+1012:     }
+1013: 
+1014:     const TimelineItem = ({ exp, itemVariants, forceExpand }) => {
+1015:       const [localIsOpen, setLocalIsOpen] = useState(false);
+1016:       const isOpen = forceExpand || localIsOpen;
+1017: 
+1018:       return (
+1019:         <motion.div
+1020:           variants={itemVariants}
+1021:           className="timeline-item"
+1022:           onClick={() => exp.isExpandable && setLocalIsOpen(!localIsOpen)}
+1023:           style={{ cursor: exp.isExpandable ? 'pointer' : 'default' }}
+1024:         >
+1025:           <div className="timeline-dot"></div>
+1026:           <div className="expandable-trigger">
+1027:             <div>
+1028:               <div className="timeline-date">{exp.date}</div>
+1029:               <div className="timeline-title">{exp.title}</div>
+1030:             </div>
+1031:             {exp.isExpandable && (
+1032:               <motion.svg
+1033:                 animate={{ rotate: isOpen ? 180 : 0 }}
+1034:                 className="expandable-icon"
+1035:                 viewBox="0 0 24 24"
+1036:                 fill="none"
+1037:                 stroke="currentColor"
+1038:                 strokeWidth="2"
+1039:                 strokeLinecap="round"
+1040:                 strokeLinejoin="round"
+1041:               >
+1042:                 <polyline points="6 9 12 15 18 9" />
+1043:               </motion.svg>
+1044:             )}
+1045:           </div>
+1046:           <div className="timeline-subtitle">{exp.subtitle}</div>
+1047:           <div className="timeline-desc">{exp.desc}</div>
+1048: 
+1049:           {exp.isExpandable && (
+1050:             <AnimatePresence>
+1051:               {isOpen && (
+1052:                 <motion.div
+1053:                   initial={forceExpand ? { height: "auto", opacity: 1, marginTop: 15 } : { height: 0, opacity: 0, marginTop: 0 }}
+1054:                   animate={{ height: "auto", opacity: 1, marginTop: 15 }}
+1055:                   exit={{ height: 0, opacity: 0, marginTop: 0 }}
+1056:                   transition={{ duration: forceExpand ? 0 : 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+1057:                   className="expandable-content"
+1058:                   style={{ overflow: 'hidden' }}
+1059:                 >
+1060:                   {exp.subItems.map((sub, i) => (
+1061:                     <div key={i} className="sub-item">
+1062:                       <div className="sub-item-date">{sub.date}</div>
+1063:                       <div className="sub-item-title">{sub.title}</div>
+1064:                       <div className="sub-item-desc">{sub.desc}</div>
+1065:                     </div>
+1066:                   ))}
+1067:                 </motion.div>
+1068:               )}
+1069:             </AnimatePresence>
+1070:           )}
+1071:         </motion.div>
+1072:       );
+1073:     };
+1074: 
+1075:     const MainContent = ({ isGenerating }) => {
+1076:       const containerVariants = {
+1077:         hidden: { opacity: 0 },
+1078:         show: { opacity: 1, transition: { staggerChildren: 0.15 } }
+1079:       };
+1080: 
+1081:       const itemVariants = {
+1082:         hidden: { opacity: 0, y: 20 },
+1083:         show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+1084:       };
+1085: 
+1086:       return (
+1087:         <div className="main-content">
+1088:           <HeaderInfo className="header-desktop" />
+1089: 
+1090:           <motion.div
+1091:             initial="hidden"
+1092:             whileInView="show"
+1093:             viewport={{ once: true, margin: "-100px" }}
+1094:             variants={containerVariants}
+1095:           >
+1096:             <h2 className="section-title">Experiencia Laboral</h2>
+1097:             <div className="timeline">
+1098:               {INFO.experience.map(exp => (
+1099:                 <TimelineItem key={exp.id} exp={exp} itemVariants={itemVariants} forceExpand={isGenerating} />
+1100:               ))}
+1101:             </div>
+1102:           </motion.div>
+1103:         </div>
+1104:       );
+1105:     }
+1106: 
+1107:     // --- Portfolio Section (full width) ---
+1108:     const PortfolioSection = () => {
+1109:       const containerVariants = {
+1110:         hidden: { opacity: 0 },
+1111:         show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+1112:       };
+1113:       const itemVariants = {
+1114:         hidden: { opacity: 0, y: 20 },
+1115:         show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+1116:       };
+1117: 
+1118:       return (
+1119:         <div className="full-width-section">
+1120:           <motion.div
+1121:             initial="hidden"
+1122:             whileInView="show"
+1123:             viewport={{ once: true, margin: "-50px" }}
+1124:             variants={containerVariants}
+1125:           >
+1126:             <h2 className="section-title">Portafolio</h2>
+1127:             <div className="gallery-masonry">
+1128:               {INFO.portfolio.map((imgSrc, idx) => (
+1129:                 <motion.div key={idx} variants={itemVariants} className="gallery-item">
+1130:                   <img src={imgSrc} alt={`Portfolio ${idx + 1}`} />
+1131:                 </motion.div>
+1132:               ))}
+1133:             </div>
+1134:           </motion.div>
+1135: 
+1136:           <footer style={{ marginTop: '40px', paddingTop: '20px', borderTop: '1px solid var(--border-color)', textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+1137:             &copy; 2026 {INFO.name}. Todos los derechos reservados.
+1138:           </footer>
+1139:         </div>
+1140:       );
+1141:     }
+1142: 
+1143:     // --- App ---
+1144:     const App = () => {
+1145:       const [isDark, setIsDark] = useState(true);
+1146:       const [isGenerating, setIsGenerating] = useState(false);
+1147:       const cvRef = useRef(null);
+1148: 
+1149:       useEffect(() => {
+1150:         if (isDark) {
+1151:           document.documentElement.classList.remove('light');
+1152:         } else {
+1153:           document.documentElement.classList.add('light');
+1154:         }
+1155:       }, [isDark]);
+1156: 
+1157:       const toggleTheme = () => setIsDark(!isDark);
+1158: 
+1159:       const downloadPDF = async () => {
+1160:         setIsGenerating(true);
+1161:         // Esperamos un momento para que React procese isGenerating y expanda los TimelineItems
+1162:         await new Promise(resolve => setTimeout(resolve, 800));
+1163: 
+1164:         const element = cvRef.current;
+1165:         if (!element) return;
+1166: 
+1167:         try {
+1168:           // Aseguramos que estamos al inicio para la captura
+1169:           window.scrollTo(0, 0);
+1170:           
+1171:           // Clonamos estilos temporales para la captura (forzar modo escritorio para el PDF)
+1172:           const originalStyle = element.getAttribute('style') || '';
+1173:           element.style.width = '1140px';
+1174:           element.style.maxWidth = 'none';
+1175:           element.style.borderRadius = '0';
+1176:           
+1177:           const canvas = await html2canvas(element, {
+1178:             scale: 2,
+1179:             useCORS: true,
+1180:             backgroundColor: isDark ? '#0a0a0f' : '#f5f2ee',
+1181:             logging: false,
+1182:             windowWidth: 1140, // Forzar ancho de ventana para la captura
+1183:             onclone: (clonedDoc) => {
+1184:               const clonedEl = clonedDoc.querySelector('.cv-container');
+1185:               if (clonedEl) {
+1186:                 clonedEl.style.width = '1140px';
+1187:                 clonedEl.style.maxWidth = 'none';
+1188:                 clonedEl.style.borderRadius = '0';
+1189:               }
+1190:             }
+1191:           });
+1192: 
+1193:           const imgData = canvas.toDataURL('image/jpeg', 0.95);
+1194:           const { jsPDF } = window.jspdf;
+1195:           
+1196:           const pdf = new jsPDF({
+1197:             orientation: 'p',
+1198:             unit: 'px',
+1199:             format: 'a4',
+1200:             hotfixes: ["px_scaling"]
+1201:           });
+1202: 
+1203:           const pageWidth = pdf.internal.pageSize.getWidth();
+1204:           const pageHeight = pdf.internal.pageSize.getHeight();
+1205:           const imgWidth = pageWidth;
+1206:           const imgHeight = (canvas.height * imgWidth) / canvas.width;
+1207: 
+1208:           pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+1209:           
+1210:           // Si el contenido es muy largo, podemos añadir páginas, 
+1211:           // pero para un CV suele ser mejor una sola página larga o 2 fijas.
+1212:           // Aquí lo dejamos en una página auto-escalada o múltiple si es necesario.
+1213:           
+1214:           pdf.save(`CV_Dilan_Berriel_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`);
+1215:           
+1216:           // Restaurar estilo
+1217:           element.setAttribute('style', originalStyle);
+1218: 
+1219:         } catch (error) {
+1220:           console.error("Error al generar PDF:", error);
+1221:           alert("No se pudo generar el PDF. Revisa la consola para más detalles.");
+1222:         } finally {
+1223:           setIsGenerating(false);
+1224:         }
+1225:       };
+1226: 
+1227:       return (
+1228:         <>
+1229:           <AnimatePresence>
+1230:             {isGenerating && (
+1231:               <motion.div
+1232:                 initial={{ opacity: 0 }}
+1233:                 animate={{ opacity: 1 }}
+1234:                 exit={{ opacity: 0 }}
+1235:                 className="pdf-overlay"
+1236:               >
+1237:                 <div style={{ textAlign: 'center' }}>
+1238:                   <motion.div
+1239:                     animate={{ rotate: 360 }}
+1240:                     transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+1241:                     style={{ fontSize: '2rem', marginBottom: '10px' }}
+1242:                   >
+1243:                     ⏳
+1244:                   </motion.div>
+1245:                   Generando tu CV...
+1246:                 </div>
+1247:               </motion.div>
+1248:             )}
+1249:           </AnimatePresence>
+1250: 
+1251:           <motion.div
+1252:             initial={{ opacity: 0, y: 40 }}
+1253:             animate={{ opacity: 1, y: 0 }}
+1254:             transition={{ duration: 0.8, ease: "easeOut" }}
+1255:             className="cv-container"
+1256:             ref={cvRef}
+1257:           >
+1258:             <motion.div
+1259:               className="actions-container"
+1260:               initial={{ opacity: 0 }}
+1261:               animate={{ opacity: 1 }}
+1262:               transition={{ delay: 1, duration: 0.5 }}
+1263:             >
+1264:               <button className="icon-button" onClick={toggleTheme} aria-label="Toggle Theme" title="Toggle Theme">
+1265:                 <AnimatePresence mode="wait">
+1266:                   <motion.div
+1267:                     key={isDark ? "dark" : "light"}
+1268:                     initial={{ rotate: -90, opacity: 0 }}
+1269:                     animate={{ rotate: 0, opacity: 1 }}
+1270:                     exit={{ rotate: 90, opacity: 0 }}
+1271:                     transition={{ duration: 0.3 }}
+1272:                   >
+1273:                     {isDark ? <SunIcon /> : <MoonIcon />}
+1274:                   </motion.div>
+1275:                 </AnimatePresence>
+1276:               </button>
+1277:               <button className="icon-button" onClick={downloadPDF} aria-label="Descargar PDF" title="Descargar PDF">
+1278:                 <DownloadIcon />
+1279:               </button>
+1280:             </motion.div>
+1281: 
+1282:             <Sidebar />
+1283:             <MainContent isGenerating={isGenerating} />
+1284:             <PortfolioSection />
+1285:             <CreatorWatermark />
+1286:           </motion.div>
+1287:         </>
+1288:       );
+1289:     }
+1290: 
+1291:     // --- Creator Watermark ---
+1292:     const CreatorWatermark = () => (
+1293:       <div className="creator-watermark">
+1294:         <img
+1295:           src="signaturenobackground.png"
+1296:           alt="Created by Alay"
+1297:           className="creator-signature"
+1298:         />
+1299:         <div className="creator-socials">
+1300:           {/* Instagram */}
+1301:           <a
+1302:             href="https://www.instagram.com/alaybuilds?igsh=ZjM4dWtjaWFrMXly"
+1303:             target="_blank"
+1304:             rel="noreferrer"
+1305:             className="creator-social-link"
+1306:             title="Instagram @alaybuilds"
+1307:           >
+1308:             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+1309:               <defs>
+1310:                 <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+1311:                   <stop offset="0%" stopColor="#f09433" />
+1312:                   <stop offset="25%" stopColor="#e6683c" />
+1313:                   <stop offset="50%" stopColor="#dc2743" />
+1314:                   <stop offset="75%" stopColor="#cc2366" />
+1315:                   <stop offset="100%" stopColor="#bc1888" />
+1316:                 </linearGradient>
+1317:               </defs>
+1318:               <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#ig-grad)" strokeWidth="2" />
+1319:               <circle cx="12" cy="12" r="4" stroke="url(#ig-grad)" strokeWidth="2" />
+1320:               <circle cx="17.5" cy="6.5" r="1" fill="url(#ig-grad)" />
+1321:             </svg>
+1322:           </a>
+1323:           {/* TikTok */}
+1324:           <a
+1325:             href="https://www.tiktok.com/@alaydev?_r=1&_t=ZS-954TvKctxc0"
+1326:             target="_blank"
+1327:             rel="noreferrer"
+1328:             className="creator-social-link"
+1329:             title="TikTok @alaydev"
+1330:           >
+1331:             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+1332:               <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z" fill="#ffffff" />
+1333:             </svg>
+1334:           </a>
+1335:         </div>
+1336:       </div>
+1337:     );
+1338: 
+1339:     const rootNode = document.getElementById('root');
+1340:     const root = ReactDOM.createRoot(rootNode);
+1341:     root.render(<App />);
+1342:   </script>
+1343: </body>
+1344: 
+1345: </html>

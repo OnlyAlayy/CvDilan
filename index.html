@@ -607,6 +607,48 @@
 
     /* --- Responsive Styles --- */
     @media (max-width: 992px) {
+
+      /* Mobile Reordering Logic */
+      .cv-container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        order: 1;
+      }
+
+      .main-content {
+        order: 2;
+        /* Professional Experience comes after profile/contact */
+      }
+
+      .full-width-section {
+        order: 3;
+      }
+
+      /* Specific Sidebar segments */
+      .sidebar>.profile-wrapper {
+        order: 1;
+      }
+
+      .sidebar>.header-mobile {
+        order: 2;
+      }
+
+      .sidebar>.info-list {
+        order: 3;
+      }
+
+      /* Contact info */
+      .sidebar>div:not(.profile-wrapper):not(.header-mobile):not(.info-list) {
+        order: 4;
+      }
+
+      /* Skills... */
+
       .cv-container {
         margin: 20px;
         flex-direction: column;
@@ -616,7 +658,8 @@
       .sidebar {
         width: 100%;
         padding: 40px 30px;
-        gap: 30px;
+        gap: 20px;
+        text-align: center;
       }
 
       .main-content {
@@ -628,15 +671,35 @@
       .profile-wrapper {
         width: 160px;
         height: 160px;
+        margin: 0 auto 10px auto;
+      }
+
+      .header-desktop {
+        display: none !important;
+      }
+
+      .header-mobile {
+        display: block !important;
+        margin-top: 10px;
+        text-align: center;
       }
 
       .name {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
+        text-align: center;
       }
 
       .profession {
         font-size: 0.9rem;
         letter-spacing: 2px;
+        text-align: center;
+        margin-top: 8px;
+      }
+
+      .profile-text {
+        text-align: center;
+        margin: 15px auto 0;
+        max-width: 100%;
       }
 
       .full-width-section {
@@ -660,6 +723,14 @@
       }
     }
 
+    .header-mobile {
+      display: none;
+    }
+
+    .header-desktop {
+      display: block;
+    }
+
     @media (max-width: 600px) {
       .cv-container {
         margin: 10px;
@@ -667,12 +738,11 @@
       }
 
       .name {
-        font-size: 2rem;
+        font-size: 1.8rem;
       }
 
       .profile-text {
-        font-size: 1rem;
-        max-width: 100%;
+        font-size: 0.95rem;
       }
 
       .timeline-item {
@@ -682,7 +752,7 @@
       .timeline-dot {
         left: -32.5px;
       }
-      
+
       .creator-watermark {
         bottom: 15px;
         right: 15px;
@@ -761,6 +831,7 @@
       mail: "dilanberriel18@gmail.com",
       address: "Emancipación 4375, Block A atp.008",
       profile: "Me considero una persona organizada y responsable. Siempre tengo la mejor disposición para la realización de mis labores. Me manejo de buena manera en PC y me gusta hacer contenido en redes sociales. Estoy dispuesto a seguir aprendiendo en la labor que se necesite.",
+      profileImage: "CvPerfilImagen.jpg",
       experience: [
         {
           id: 1,
@@ -770,17 +841,29 @@
           desc: "Orden y limpieza de depósito, reposición, atención al cliente y armado de pedidos."
         },
         {
+          id: 10,
+          date: "Enero - Febrero 2025",
+          title: "Actor · Modelo Publicitario",
+          subtitle: "Movistar",
+          desc: "Participación y figura en spot publicitario de Movistar."
+        },
+        {
+          id: 9,
+          date: "Julio 2024 - Actualidad",
+          title: "Actor Independiente",
+          subtitle: "Varios Proyectos",
+          desc: "Múltiples participaciones en proyectos independientes publicitarios."
+        },
+        {
           id: 8,
           date: "Junio 2024 - Actualidad",
-          title: "Actor · Extra · Modelo Publicitario",
-          subtitle: "Varios Proyectos",
+          title: "Extra en Producciones Audiovisuales",
+          subtitle: "Series de TV",
           desc: "Haga clic para ver detalles de mis participaciones.",
           isExpandable: true,
           subItems: [
             { date: "Mayo - Junio 2025", title: "Kaia | Serie de TV", desc: "Participación como extra en serie de televisión para la producción Kaia." },
             { date: "02/04/2025 - 02/05/2025", title: "BARRADAS | Serie de TV", desc: "Participación como extra en serie de televisión para la producción BARRADAS." },
-            { date: "28/01/2025 - 28/02/2025", title: "Movistar", desc: "Participación y figura en spot publicitario de Movistar." },
-            { date: "Julio 2024 - Actualidad", title: "Independiente", desc: "Múltiples participaciones en proyectos independientes publicitarios." },
             { date: "Junio - Julio 2024", title: "Barra Brava | Serie de TV", desc: "Participación como extra en serie de televisión Barra Brava." }
           ]
         },
@@ -831,6 +914,40 @@
     };
 
     // --- Components ---
+    const HeaderInfo = ({ className }) => {
+      const nameParts = INFO.name.split(" ");
+      return (
+        <div className={className}>
+          <motion.div initial="hidden" animate="show" variants={{
+            hidden: { opacity: 0 },
+            show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+          }}>
+            <h1 className="name">
+              <motion.strong variants={{ hidden: { opacity: 0, letterSpacing: "-5px" }, show: { opacity: 1, letterSpacing: "0px", transition: { duration: 0.8 } } }}>
+                {nameParts[0]}
+              </motion.strong>
+              <motion.strong variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.8 } } }}>
+                {" " + nameParts.slice(1).join(" ")}
+              </motion.strong>
+            </h1>
+            <motion.div
+              variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.4 } } }}
+              className="profession"
+            >
+              {INFO.title}
+            </motion.div>
+
+            <motion.p
+              variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 1, delay: 0.6 } } }}
+              className="profile-text"
+            >
+              {INFO.profile}
+            </motion.p>
+          </motion.div>
+        </div>
+      );
+    };
+
     const Sidebar = () => {
       const containerVariants = {
         hidden: { opacity: 0 },
@@ -852,9 +969,11 @@
           >
             <div className="profile-border"></div>
             <div className="profile-inner">
-              <img src="CvPerfilImagen.jpg" alt="Dilan Berriel Profile" />
+              <img src={INFO.profileImage} alt="Dilan Berriel Profile" />
             </div>
           </motion.div>
+
+          <HeaderInfo className="header-mobile" />
 
           <motion.div variants={containerVariants} initial="hidden" animate="show" className="info-list">
             <h3 className="section-title">Contacto</h3>
@@ -879,6 +998,7 @@
             </motion.li>
           </motion.div>
 
+          {/* rest of sidebar unchanged... */}
           <motion.div variants={containerVariants} initial="hidden" animate="show" style={{ marginTop: '10px' }}>
             <h3 className="section-title">Programas</h3>
             <div className="skills-container">
@@ -925,14 +1045,15 @@
       );
     }
 
-    const TimelineItem = ({ exp, itemVariants }) => {
-      const [isOpen, setIsOpen] = useState(false);
+    const TimelineItem = ({ exp, itemVariants, forceExpand }) => {
+      const [localIsOpen, setLocalIsOpen] = useState(false);
+      const isOpen = forceExpand || localIsOpen;
 
       return (
         <motion.div
           variants={itemVariants}
           className="timeline-item"
-          onClick={() => exp.isExpandable && setIsOpen(!isOpen)}
+          onClick={() => exp.isExpandable && setLocalIsOpen(!localIsOpen)}
           style={{ cursor: exp.isExpandable ? 'pointer' : 'default' }}
         >
           <div className="timeline-dot"></div>
@@ -963,10 +1084,10 @@
             <AnimatePresence>
               {isOpen && (
                 <motion.div
-                  initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                  initial={forceExpand ? { height: "auto", opacity: 1, marginTop: 15 } : { height: 0, opacity: 0, marginTop: 0 }}
                   animate={{ height: "auto", opacity: 1, marginTop: 15 }}
                   exit={{ height: 0, opacity: 0, marginTop: 0 }}
-                  transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                  transition={{ duration: forceExpand ? 0 : 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                   className="expandable-content"
                   style={{ overflow: 'hidden' }}
                 >
@@ -985,11 +1106,7 @@
       );
     };
 
-    const MainContent = () => {
-
-      // Split name for animation
-      const nameParts = INFO.name.split(" ");
-
+    const MainContent = ({ isGenerating }) => {
       const containerVariants = {
         hidden: { opacity: 0 },
         show: { opacity: 1, transition: { staggerChildren: 0.15 } }
@@ -1002,32 +1119,7 @@
 
       return (
         <div className="main-content">
-          <motion.div initial="hidden" animate="show" variants={{
-            hidden: { opacity: 0 },
-            show: { opacity: 1, transition: { staggerChildren: 0.1 } }
-          }}>
-            <h1 className="name">
-              <motion.strong variants={{ hidden: { opacity: 0, letterSpacing: "-5px" }, show: { opacity: 1, letterSpacing: "0px", transition: { duration: 0.8 } } }}>
-                {nameParts[0]}
-              </motion.strong>
-              <motion.strong variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.8 } } }}>
-                {" " + nameParts.slice(1).join(" ")}
-              </motion.strong>
-            </h1>
-            <motion.div
-              variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.4 } } }}
-              className="profession"
-            >
-              {INFO.title}
-            </motion.div>
-
-            <motion.p
-              variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 1, delay: 0.6 } } }}
-              className="profile-text"
-            >
-              {INFO.profile}
-            </motion.p>
-          </motion.div>
+          <HeaderInfo className="header-desktop" />
 
           <motion.div
             initial="hidden"
@@ -1038,7 +1130,7 @@
             <h2 className="section-title">Experiencia Laboral</h2>
             <div className="timeline">
               {INFO.experience.map(exp => (
-                <TimelineItem key={exp.id} exp={exp} itemVariants={itemVariants} />
+                <TimelineItem key={exp.id} exp={exp} itemVariants={itemVariants} forceExpand={isGenerating} />
               ))}
             </div>
           </motion.div>
@@ -1099,49 +1191,85 @@
       const toggleTheme = () => setIsDark(!isDark);
 
       const downloadPDF = async () => {
-        const element = cvRef.current;
-        if (!element) return;
-
         setIsGenerating(true);
+        // Esperamos un momento para que React procese isGenerating
+        await new Promise(resolve => setTimeout(resolve, 800));
 
-        // Ocultar elementos para el PDF
-        const actions = document.querySelector('.actions-container');
-        const watermark = document.querySelector('.creator-watermark');
-        if (actions) actions.style.opacity = '0';
-        if (watermark) watermark.style.opacity = '0';
+        const element = cvRef.current;
+        if (!element) {
+          setIsGenerating(false);
+          return;
+        }
 
         try {
-          // Capturar el CV. Usamos un factor de escala para mejor calidad.
+          // Aseguramos que estamos al inicio para la captura
+          window.scrollTo(0, 0);
+
+          // Forzamos un ancho de escritorio temporal
+          const originalStyle = element.getAttribute('style') || '';
+          element.style.width = '1140px';
+          element.style.maxWidth = 'none';
+          element.style.borderRadius = '0';
+
+          // Escala menor en celulares para no colapsar la RAM
+          const isMobile = window.innerWidth < 768;
+
           const canvas = await html2canvas(element, {
-            scale: 2,
+            scale: isMobile ? 1.5 : 2,
             useCORS: true,
-            backgroundColor: isDark ? '#0a0a0f' : '#f5f2ee', // Match current theme
-            logging: false
+            allowTaint: false,
+            backgroundColor: isDark ? '#0a0a0f' : '#f5f2ee',
+            logging: false,
+            windowWidth: 1140,
+            onclone: (clonedDoc) => {
+              const clonedEl = clonedDoc.querySelector('.cv-container');
+              if (clonedEl) {
+                clonedEl.style.width = '1140px';
+                clonedEl.style.maxWidth = 'none';
+                clonedEl.style.borderRadius = '0';
+              }
+            }
           });
 
-          const imgData = canvas.toDataURL('image/png');
+          // Restaurar estilo antes de seguir
+          element.setAttribute('style', originalStyle);
+
+          const imgData = canvas.toDataURL('image/jpeg', 0.95);
           const { jsPDF } = window.jspdf;
-          
-          // Calculamos dimensiones para que encaje
-          const imgWidth = canvas.width;
-          const imgHeight = canvas.height;
-          
+
           const pdf = new jsPDF({
-            orientation: imgWidth > imgHeight ? 'l' : 'p',
+            orientation: 'p',
             unit: 'px',
-            format: [imgWidth, imgHeight]
+            format: 'a4',
+            hotfixes: ["px_scaling"]
           });
 
-          pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-          pdf.save(`${INFO.shortName.replace(/\s+/g, '_')}_CV.pdf`);
+          const pageWidth = pdf.internal.pageSize.getWidth();
+          const pageHeight = pdf.internal.pageSize.getHeight();
+          const imgWidth = pageWidth;
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+          // Sistema de páginas múltiples para evitar contenido cortado si el CV es muy largo
+          let heightLeft = imgHeight;
+          let position = 0;
+
+          pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+
+          // Añadir nuevas páginas si el lienzo es más largo que una hoja A4
+          while (heightLeft > 0) {
+            position = heightLeft - imgHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+          }
+
+          pdf.save(`CV_Dilan_Berriel_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`);
 
         } catch (error) {
           console.error("Error al generar PDF:", error);
-          alert("No se pudo generar el PDF. Por favor intenta de nuevo.");
+          alert("Error: Si abriste el archivo con doble clic (file://), el navegador bloquea la descarga de las imágenes por seguridad. Usa Live Server en VSCode, o simplemente súbelo a producción y funcionará perfecto.");
         } finally {
-          // Restaurar UI
-          if (actions) actions.style.opacity = '1';
-          if (watermark) watermark.style.opacity = '1';
           setIsGenerating(false);
         }
       };
@@ -1182,6 +1310,7 @@
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1, duration: 0.5 }}
+              data-html2canvas-ignore="true"
             >
               <button className="icon-button" onClick={toggleTheme} aria-label="Toggle Theme" title="Toggle Theme">
                 <AnimatePresence mode="wait">
@@ -1202,7 +1331,7 @@
             </motion.div>
 
             <Sidebar />
-            <MainContent />
+            <MainContent isGenerating={isGenerating} />
             <PortfolioSection />
             <CreatorWatermark />
           </motion.div>
@@ -1212,7 +1341,7 @@
 
     // --- Creator Watermark ---
     const CreatorWatermark = () => (
-      <div className="creator-watermark">
+      <div className="creator-watermark" data-html2canvas-ignore="true">
         <img
           src="signaturenobackground.png"
           alt="Created by Alay"
