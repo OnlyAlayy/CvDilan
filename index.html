@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV Dilan Agustin Berriel Cardozo</title>
+  <link rel="icon" type="image/png" href="logopaginas.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Raleway:wght@300;600;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Libraries -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    :root {
+      /* Dark Theme (Default) */
+      --bg-color: #0a0a0f;
+      --sidebar-bg: #111118;
+      --accent: #c9a84c;
+      --text-main: #f0f0f0;
+      --text-muted: #a0a0ab;
+      --shadow-color: rgba(0, 0, 0, 0.5);
+      --border-color: rgba(201, 168, 76, 0.1);
+    }
+
+    :root.light {
+      /* Light Theme */
+      --bg-color: #f5f2ee;
+      --sidebar-bg: #eae5dc;
+      --accent: #c9a84c;
+      --text-main: #1a1a1a;
+      --text-muted: #5a5a6a;
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --border-color: rgba(201, 168, 76, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: 'DM Sans', sans-serif;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .title {
+      font-family: 'Raleway', sans-serif;
+    }
+
+    .cv-container {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 40px auto;
+      min-height: 90vh;
+      box-shadow: 0 25px 50px -12px var(--shadow-color);
+      border-radius: 24px;
+      overflow: hidden;
+      background-color: var(--bg-color);
+      transition: background-color 0.4s ease;
+      position: relative;
+    }
+
+    .full-width-section {
+      width: 100%;
+      padding: 40px 60px 50px;
+      background-color: var(--bg-color);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .sidebar {
+      width: 32%;
+      background-color: var(--sidebar-bg);
+      color: #f0f0f0;
+      padding: 50px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .light .sidebar {
+      color: #1a1a1a;
+    }
+
+    .light .info-item {
+      color: #3a3a4a;
+    }
+
+    .light .info-item:hover {
+      color: #1a1a1a;
+    }
+
+    .main-content {
+      width: 68%;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      position: relative;
+    }
+
+    /* Foto con borde dorado giratorio */
+    .profile-wrapper {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .profile-wrapper:hover {
+      transform: scale(1.05) !important;
+    }
+
+    .profile-border {
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, transparent 0%, var(--accent) 50%, transparent 100%);
+      animation: rotateBorder 4s linear infinite;
+    }
+
+    .profile-inner {
+      position: absolute;
+      inset: 0;
+      background-color: var(--sidebar-bg);
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid var(--sidebar-bg);
+    }
+
+    .profile-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @keyframes rotateBorder {
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background-color: var(--border-color);
+    }
+
+    .sidebar .section-title::after {
+      background-color: rgba(201, 168, 76, 0.2);
+    }
+
+    .info-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: #d0d0d8;
+      line-height: 1.5;
+      transition: color 0.3s ease, transform 0.3s ease;
+      cursor: default;
+    }
+
+    .info-item:hover {
+      color: #ffffff;
+      transform: translateX(5px) !important;
+    }
+
+    .info-item svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* Skills as Tags */
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .skill-tag {
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(201, 168, 76, 0.4);
+      color: var(--text-main);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .skill-tag:hover {
+      background-color: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(201, 168, 76, 0.3);
+    }
+
+    /* Portfolio Gallery */
+    .gallery-masonry {
+      column-count: 3;
+      column-gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .gallery-masonry {
+        column-count: 2;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .gallery-masonry {
+        column-count: 1;
+      }
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 20px;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .gallery-item img:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 24px rgba(201, 168, 76, 0.2);
+    }
+
+    /* Header Main */
+    .name {
+      font-size: 3.5rem;
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .name strong {
+      font-weight: 800;
+    }
+
+    .profession {
+      font-size: 1.1rem;
+      color: var(--accent);
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+    }
+
+    .profile-text {
+      color: var(--text-muted);
+      line-height: 1.8;
+      font-weight: 400;
+      font-size: 1.05rem;
+      max-width: 95%;
+      margin-top: 20px;
+      transition: color 0.4s ease;
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 30px;
+      margin-top: 10px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--accent) 0%, rgba(201, 168, 76, 0.1) 100%);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 35px;
+      padding: 24px 30px;
+      border-radius: 12px;
+      background-color: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: default;
+    }
+
+    .timeline-item:hover {
+      transform: translateY(-5px) scale(1.02) !important;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-color: rgba(201, 168, 76, 0.5);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(201, 168, 76, 0.2);
+    }
+
+    .light .timeline-item {
+      background-color: #ffffff;
+    }
+
+    .light .timeline-item:hover {
+      background-color: #fafafa;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1), 0 0 15px rgba(201, 168, 76, 0.3);
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -35.5px;
+      top: 30px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: var(--accent);
+      border: 3px solid var(--bg-color);
+      box-shadow: 0 0 0 2px var(--accent);
+      transition: border-color 0.4s ease;
+    }
+
+    .timeline-date {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .timeline-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+
+    .timeline-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .timeline-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    /* Actions */
+    .actions-container {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      display: flex;
+      gap: 15px;
+      z-index: 100;
+      opacity: 0;
+      /* Animated in react */
+    }
+
+    .icon-button {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-main);
+      transition: all 0.3s ease;
+    }
+
+    .light .icon-button {
+      background: #fff;
+    }
+
+    .icon-button:hover {
+      background: var(--accent);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(201, 168, 76, 0.3);
+    }
+
+    .icon-button svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    /* Print/PDF mode */
+    @page {
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        margin: 0;
+        background-color: var(--bg-color) !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .cv-container {
+        box-shadow: none !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        max-width: none !important;
+      }
+
+      .actions-container {
+        display: none !important;
+      }
+    }
+
+    /* Custom PDF class for html2canvas */
+    .pdf-render {
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      margin: 0 !important;
+      transform: none !important;
+    }
+
+    /* Creator Watermark */
+    .creator-watermark {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.55;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: auto;
+    }
+
+    .creator-watermark:hover {
+      opacity: 1;
+      transform: translateY(-3px);
+    }
+
+    .creator-signature {
+      height: 36px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+    }
+
+    .creator-socials {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .creator-social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .creator-social-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.15);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    }
+
+    .creator-social-link svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    @media print {
+      .creator-watermark {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-type="module">
+    const { useState, useEffect, useRef } = React;
+    const { motion, AnimatePresence } = window.Motion;
+
+    // --- Icons ---
+    const SunIcon = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="5" strokeWidth="2" stroke="currentColor" fill="none" />
+        <path strokeWidth="2" stroke="currentColor" strokeLinecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+      </svg>
+    );
+
+    const MoonIcon = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path strokeWidth="2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" fill="none" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+      </svg>
+    );
+
+    const DownloadIcon = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path strokeWidth="2" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" fill="none" d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+      </svg>
+    );
+
+    const PhoneIcon = () => (
+      <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
+    );
+
+    const MailIcon = () => (
+      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
+    );
+
+    const LocationIcon = () => (
+      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
+    );
+
+    const CalendarIcon = () => (
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+    );
+
+    // --- Data ---
+    const INFO = {
+      name: "Dilan Agustin Berriel Cardozo",
+      shortName: "Dilan Berriel",
+      title: "Modelo Publicitario · Actor",
+      dob: "08/03/2005",
+      nationality: "Estadounidense / Uruguayo",
+      phone: "093623492",
+      mail: "dilanberriel18@gmail.com",
+      address: "Emancipación 4375, Block A atp.008",
+      profile: "Me considero una persona organizada y responsable. Siempre tengo la mejor disposición para la realización de mis labores. Me manejo de buena manera en PC y me gusta hacer contenido en redes sociales. Estoy dispuesto a seguir aprendiendo en la labor que se necesite.",
+      experience: [
+        {
+          id: 1,
+          date: "Junio - Octubre 2025",
+          title: "Atención al Cliente y Depósito",
+          subtitle: "TyT Martini Ferretería",
+          desc: "Orden y limpieza de depósito, reposición, atención al cliente y armado de pedidos."
+        },
+        {
+          id: 2,
+          date: "Mayo - Junio 2025",
+          title: "Actor",
+          subtitle: "Kaia | Serie de TV",
+          desc: "Participación actoral en serie de televisión para la producción Kaia."
+        },
+        {
+          id: 3,
+          date: "02/04/2025 - 02/05/2025",
+          title: "Actor",
+          subtitle: "BARRADAS | Serie de TV",
+          desc: "Participación actoral en serie de televisión para la producción BARRADAS."
+        },
+        {
+          id: 4,
+          date: "28/01/2025 - 28/02/2025",
+          title: "Actor y Figura Publicitaria",
+          subtitle: "Movistar",
+          desc: "Participación y figura en spot publicitario de Movistar."
+        },
+        {
+          id: 5,
+          date: "Julio 2024 - Actualidad",
+          title: "Actor y Modelo (General)",
+          subtitle: "Independiente",
+          desc: "Múltiples participaciones en proyectos independientes publicitarios."
+        },
+        {
+          id: 6,
+          date: "Junio - Julio 2024",
+          title: "Actor",
+          subtitle: "Barra Brava | Serie de TV",
+          desc: "Participación actoral en serie de televisión Barra Brava."
+        },
+        {
+          id: 7,
+          date: "Enero - Marzo 2023",
+          title: "Asistente en Construcción",
+          subtitle: "Independiente",
+          desc: "Realización de tareas con supervisión: pinturas y cargamento general."
+        }
+      ],
+      education: [
+        {
+          id: 1,
+          date: "Actualmente",
+          title: "Ciclo Básico (Turno Nocturno)",
+          subtitle: "Liceo n°38",
+          desc: "Cursando estudios de ciclo básico en horario nocturno para compatibilizar con horarios laborales."
+        },
+        {
+          id: 2,
+          date: "2018",
+          title: "Educación Primaria",
+          subtitle: "Escuela n°115",
+          desc: "Enseñanza primaria completa."
+        }
+      ],
+      skills: [
+        { name: "Photopea", level: 90 },
+        { name: "Capcut", level: 95 },
+        { name: "Edición de PC", level: 85 },
+        { name: "Contenido RRSS", level: 90 }
+      ],
+      courses: [
+        { name: "Revestimiento para pisos", entity: "INEFOP", status: "Aprobado" }
+      ],
+      references: [
+        { name: "Mathias Di Martini", role: "Encargado TyT Martini", phone: "098547434" },
+        { name: "Sebastian Ponce", role: "Docente de Revestimiento", phone: "098932184" }
+      ],
+      portfolio: [
+        "foto1.jpg",
+        "foto2.jpg",
+        "foto3.jpg",
+        "foto4.jpg",
+        "foto5.png"
+      ]
+    };
+
+    // --- Components ---
+    const Sidebar = () => {
+      const containerVariants = {
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+      };
+
+      const itemVariants = {
+        hidden: { opacity: 0, x: -20 },
+        show: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } }
+      };
+
+      return (
+        <div className="sidebar">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="profile-wrapper"
+          >
+            <div className="profile-border"></div>
+            <div className="profile-inner">
+              <img src="CvPerfilImagen.jpg" alt="Dilan Berriel Profile" />
+            </div>
+          </motion.div>
+
+          <motion.div variants={containerVariants} initial="hidden" animate="show" className="info-list">
+            <h3 className="section-title">Contacto</h3>
+            <motion.li variants={itemVariants} className="info-item">
+              <a href={`https://wa.me/59893623492`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'inherit', textDecoration: 'none' }}>
+                <PhoneIcon /> {INFO.phone}
+              </a>
+            </motion.li>
+            <motion.li variants={itemVariants} className="info-item">
+              <a href={`https://mail.google.com/mail/?view=cm&fs=1&to=${INFO.mail}`} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '12px', color: 'inherit', textDecoration: 'none' }}>
+                <MailIcon /> {INFO.mail}
+              </a>
+            </motion.li>
+            <motion.li variants={itemVariants} className="info-item">
+              <LocationIcon /> {INFO.address}
+            </motion.li>
+            <motion.li variants={itemVariants} className="info-item" style={{ marginTop: '10px' }}>
+              <CalendarIcon /> Nacimiento: {INFO.dob}
+            </motion.li>
+            <motion.li variants={itemVariants} className="info-item">
+              <LocationIcon /> {INFO.nationality}
+            </motion.li>
+          </motion.div>
+
+          <motion.div variants={containerVariants} initial="hidden" animate="show" style={{ marginTop: '10px' }}>
+            <h3 className="section-title">Programas</h3>
+            <div className="skills-container">
+              {INFO.skills.map((skill, index) => (
+                <motion.span variants={itemVariants} key={index} className="skill-tag">
+                  {skill.name}
+                </motion.span>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div variants={containerVariants} initial="hidden" animate="show">
+            <h3 className="section-title">Educación</h3>
+            {INFO.education.map((edu, idx) => (
+              <motion.div variants={itemVariants} key={idx} style={{ marginBottom: '15px' }}>
+                <div style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '2px' }}>{edu.title}</div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '2px' }}>{edu.subtitle}</div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--accent)' }}>{edu.date}</div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div variants={containerVariants} initial="hidden" animate="show">
+            <h3 className="section-title">Cursos</h3>
+            {INFO.courses.map((course, idx) => (
+              <motion.div variants={itemVariants} key={idx} style={{ marginBottom: '15px' }}>
+                <div style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '4px' }}>{course.name}</div>
+                <div style={{ fontSize: '0.9rem', color: 'var(--accent)' }}>{course.entity} - {course.status}</div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          <motion.div variants={containerVariants} initial="hidden" animate="show">
+            <h3 className="section-title">Referencias</h3>
+            {INFO.references.map((ref, idx) => (
+              <motion.div variants={itemVariants} key={idx} style={{ marginBottom: '15px' }}>
+                <div style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '4px' }}>{ref.name}</div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '2px' }}>{ref.role}</div>
+                <div style={{ fontSize: '0.9rem', color: 'var(--accent)' }}>{ref.phone}</div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      );
+    }
+
+    const MainContent = () => {
+
+      // Split name for animation
+      const nameParts = INFO.name.split(" ");
+
+      const containerVariants = {
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { staggerChildren: 0.15 } }
+      };
+
+      const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+      };
+
+      return (
+        <div className="main-content">
+          <motion.div initial="hidden" animate="show" variants={{
+            hidden: { opacity: 0 },
+            show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+          }}>
+            <h1 className="name">
+              <motion.strong variants={{ hidden: { opacity: 0, letterSpacing: "-5px" }, show: { opacity: 1, letterSpacing: "0px", transition: { duration: 0.8 } } }}>
+                {nameParts[0]}
+              </motion.strong>
+              <motion.strong variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.8 } } }}>
+                {" " + nameParts.slice(1).join(" ")}
+              </motion.strong>
+            </h1>
+            <motion.div
+              variants={{ hidden: { opacity: 0, x: -20 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, delay: 0.4 } } }}
+              className="profession"
+            >
+              {INFO.title}
+            </motion.div>
+
+            <motion.p
+              variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 1, delay: 0.6 } } }}
+              className="profile-text"
+            >
+              {INFO.profile}
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+          >
+            <h2 className="section-title">Experiencia Laboral</h2>
+            <div className="timeline">
+              {INFO.experience.map(exp => (
+                <motion.div key={exp.id} variants={itemVariants} className="timeline-item">
+                  <div className="timeline-dot"></div>
+                  <div className="timeline-date">{exp.date}</div>
+                  <div className="timeline-title">{exp.title}</div>
+                  <div className="timeline-subtitle">{exp.subtitle}</div>
+                  <div className="timeline-desc">{exp.desc}</div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      );
+    }
+
+    // --- Portfolio Section (full width) ---
+    const PortfolioSection = () => {
+      const containerVariants = {
+        hidden: { opacity: 0 },
+        show: { opacity: 1, transition: { staggerChildren: 0.1 } }
+      };
+      const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
+      };
+
+      return (
+        <div className="full-width-section">
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={containerVariants}
+          >
+            <h2 className="section-title">Portafolio</h2>
+            <div className="gallery-masonry">
+              {INFO.portfolio.map((imgSrc, idx) => (
+                <motion.div key={idx} variants={itemVariants} className="gallery-item">
+                  <img src={imgSrc} alt={`Portfolio ${idx + 1}`} />
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <footer style={{ marginTop: '40px', paddingTop: '20px', borderTop: '1px solid var(--border-color)', textAlign: 'center', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+            &copy; 2026 {INFO.name}. Todos los derechos reservados.
+          </footer>
+        </div>
+      );
+    }
+
+    // --- App ---
+    const App = () => {
+      const [isDark, setIsDark] = useState(true);
+      const cvRef = useRef(null);
+
+      useEffect(() => {
+        if (isDark) {
+          document.documentElement.classList.remove('light');
+        } else {
+          document.documentElement.classList.add('light');
+        }
+      }, [isDark]);
+
+      const toggleTheme = () => setIsDark(!isDark);
+
+      const downloadPDF = () => {
+        // Ejecutamos la impresión nativa del navegador. 
+        // El CSS @media print se encargará de darle formato A4 y ocultar los botones.
+        window.print();
+      };
+
+      return (
+        <>
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="cv-container"
+            ref={cvRef}
+          >
+            <motion.div
+              className="actions-container"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1, duration: 0.5 }}
+            >
+              <button className="icon-button" onClick={toggleTheme} aria-label="Toggle Theme" title="Toggle Theme">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={isDark ? "dark" : "light"}
+                    initial={{ rotate: -90, opacity: 0 }}
+                    animate={{ rotate: 0, opacity: 1 }}
+                    exit={{ rotate: 90, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {isDark ? <SunIcon /> : <MoonIcon />}
+                  </motion.div>
+                </AnimatePresence>
+              </button>
+              <button className="icon-button" onClick={downloadPDF} aria-label="Descargar PDF" title="Descargar PDF">
+                <DownloadIcon />
+              </button>
+            </motion.div>
+
+            <Sidebar />
+            <MainContent />
+            <PortfolioSection />
+            <CreatorWatermark />
+          </motion.div>
+        </>
+      );
+    }
+
+    // --- Creator Watermark ---
+    const CreatorWatermark = () => (
+      <div className="creator-watermark">
+        <img
+          src="signaturenobackground.png"
+          alt="Created by Alay"
+          className="creator-signature"
+        />
+        <div className="creator-socials">
+          {/* Instagram */}
+          <a
+            href="https://www.instagram.com/alaybuilds?igsh=ZjM4dWtjaWFrMXly"
+            target="_blank"
+            rel="noreferrer"
+            className="creator-social-link"
+            title="Instagram @alaybuilds"
+          >
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="ig-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#f09433" />
+                  <stop offset="25%" stopColor="#e6683c" />
+                  <stop offset="50%" stopColor="#dc2743" />
+                  <stop offset="75%" stopColor="#cc2366" />
+                  <stop offset="100%" stopColor="#bc1888" />
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#ig-grad)" strokeWidth="2" />
+              <circle cx="12" cy="12" r="4" stroke="url(#ig-grad)" strokeWidth="2" />
+              <circle cx="17.5" cy="6.5" r="1" fill="url(#ig-grad)" />
+            </svg>
+          </a>
+          {/* TikTok */}
+          <a
+            href="https://www.tiktok.com/@alaydev?_r=1&_t=ZS-954TvKctxc0"
+            target="_blank"
+            rel="noreferrer"
+            className="creator-social-link"
+            title="TikTok @alaydev"
+          >
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z" fill="#ffffff" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    );
+
+    const rootNode = document.getElementById('root');
+    const root = ReactDOM.createRoot(rootNode);
+    root.render(<App />);
+  </script>
+</body>
+
+</html>
