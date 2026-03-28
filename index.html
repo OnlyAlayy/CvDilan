@@ -410,6 +410,60 @@
       color: var(--text-muted);
     }
 
+    /* Expandable Item Styles */
+    .expandable-trigger {
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .expandable-icon {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2.5;
+      transition: transform 0.3s ease;
+    }
+
+    .expandable-content {
+      overflow: hidden;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(201, 168, 76, 0.15);
+    }
+
+    .sub-item {
+      margin-bottom: 20px;
+      padding-left: 15px;
+      border-left: 2px solid rgba(201, 168, 76, 0.2);
+    }
+
+    .sub-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .sub-item-date {
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    .sub-item-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .sub-item-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
     /* Actions */
     .actions-container {
       position: absolute;
@@ -701,39 +755,19 @@
           desc: "Orden y limpieza de depósito, reposición, atención al cliente y armado de pedidos."
         },
         {
-          id: 2,
-          date: "Mayo - Junio 2025",
-          title: "Actor",
-          subtitle: "Kaia | Serie de TV",
-          desc: "Participación actoral en serie de televisión para la producción Kaia."
-        },
-        {
-          id: 3,
-          date: "02/04/2025 - 02/05/2025",
-          title: "Actor",
-          subtitle: "BARRADAS | Serie de TV",
-          desc: "Participación actoral en serie de televisión para la producción BARRADAS."
-        },
-        {
-          id: 4,
-          date: "28/01/2025 - 28/02/2025",
-          title: "Actor y Figura Publicitaria",
-          subtitle: "Movistar",
-          desc: "Participación y figura en spot publicitario de Movistar."
-        },
-        {
-          id: 5,
-          date: "Julio 2024 - Actualidad",
-          title: "Actor y Modelo (General)",
-          subtitle: "Independiente",
-          desc: "Múltiples participaciones en proyectos independientes publicitarios."
-        },
-        {
-          id: 6,
-          date: "Junio - Julio 2024",
-          title: "Actor",
-          subtitle: "Barra Brava | Serie de TV",
-          desc: "Participación actoral en serie de televisión Barra Brava."
+          id: 8,
+          date: "Junio 2024 - Actualidad",
+          title: "Actor · Extra · Modelo Publicitario",
+          subtitle: "Varios Proyectos",
+          desc: "Haga clic para ver detalles de mis participaciones.",
+          isExpandable: true,
+          subItems: [
+            { date: "Mayo - Junio 2025", title: "Kaia | Serie de TV", desc: "Participación como extra en serie de televisión para la producción Kaia." },
+            { date: "02/04/2025 - 02/05/2025", title: "BARRADAS | Serie de TV", desc: "Participación como extra en serie de televisión para la producción BARRADAS." },
+            { date: "28/01/2025 - 28/02/2025", title: "Movistar", desc: "Participación y figura en spot publicitario de Movistar." },
+            { date: "Julio 2024 - Actualidad", title: "Independiente", desc: "Múltiples participaciones en proyectos independientes publicitarios." },
+            { date: "Junio - Julio 2024", title: "Barra Brava | Serie de TV", desc: "Participación como extra en serie de televisión Barra Brava." }
+          ]
         },
         {
           id: 7,
@@ -876,6 +910,66 @@
       );
     }
 
+    const TimelineItem = ({ exp, itemVariants }) => {
+      const [isOpen, setIsOpen] = useState(false);
+
+      return (
+        <motion.div
+          variants={itemVariants}
+          className="timeline-item"
+          onClick={() => exp.isExpandable && setIsOpen(!isOpen)}
+          style={{ cursor: exp.isExpandable ? 'pointer' : 'default' }}
+        >
+          <div className="timeline-dot"></div>
+          <div className="expandable-trigger">
+            <div>
+              <div className="timeline-date">{exp.date}</div>
+              <div className="timeline-title">{exp.title}</div>
+            </div>
+            {exp.isExpandable && (
+              <motion.svg
+                animate={{ rotate: isOpen ? 180 : 0 }}
+                className="expandable-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </motion.svg>
+            )}
+          </div>
+          <div className="timeline-subtitle">{exp.subtitle}</div>
+          <div className="timeline-desc">{exp.desc}</div>
+
+          {exp.isExpandable && (
+            <AnimatePresence>
+              {isOpen && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                  animate={{ height: "auto", opacity: 1, marginTop: 15 }}
+                  exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                  transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                  className="expandable-content"
+                  style={{ overflow: 'hidden' }}
+                >
+                  {exp.subItems.map((sub, i) => (
+                    <div key={i} className="sub-item">
+                      <div className="sub-item-date">{sub.date}</div>
+                      <div className="sub-item-title">{sub.title}</div>
+                      <div className="sub-item-desc">{sub.desc}</div>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
+        </motion.div>
+      );
+    };
+
     const MainContent = () => {
 
       // Split name for animation
@@ -929,13 +1023,7 @@
             <h2 className="section-title">Experiencia Laboral</h2>
             <div className="timeline">
               {INFO.experience.map(exp => (
-                <motion.div key={exp.id} variants={itemVariants} className="timeline-item">
-                  <div className="timeline-dot"></div>
-                  <div className="timeline-date">{exp.date}</div>
-                  <div className="timeline-title">{exp.title}</div>
-                  <div className="timeline-subtitle">{exp.subtitle}</div>
-                  <div className="timeline-desc">{exp.desc}</div>
-                </motion.div>
+                <TimelineItem key={exp.id} exp={exp} itemVariants={itemVariants} />
               ))}
             </div>
           </motion.div>
