@@ -1075,7 +1075,7 @@
             )}
           </div>
           <div className="timeline-subtitle">{exp.subtitle}</div>
-          <div className="timeline-desc">{exp.desc}</div>
+          <div className="timeline-desc" data-html2canvas-ignore={exp.isExpandable ? "true" : undefined}>{exp.desc}</div>
 
           {exp.isExpandable && (
             <AnimatePresence>
