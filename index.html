@@ -1120,7 +1120,8 @@
 
           <motion.div
             initial="hidden"
-            whileInView="show"
+            animate={isGenerating ? "show" : undefined}
+            whileInView={isGenerating ? undefined : "show"}
             viewport={{ once: true, margin: "-100px" }}
             variants={containerVariants}
           >
@@ -1189,8 +1190,8 @@
 
       const downloadPDF = async () => {
         setIsGenerating(true);
-        // Esperamos un momento para que React procese isGenerating
-        await new Promise(resolve => setTimeout(resolve, 800));
+        // Esperamos un momento para que React procese isGenerating y las animaciones terminen
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
         const element = cvRef.current;
         if (!element) {
