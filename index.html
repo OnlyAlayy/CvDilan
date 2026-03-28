@@ -689,6 +689,21 @@
         scale: 0.8;
       }
     }
+
+    /* PDF Generation Overlay */
+    .pdf-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
   </style>
 </head>
 
@@ -1070,6 +1085,7 @@
     // --- App ---
     const App = () => {
       const [isDark, setIsDark] = useState(true);
+      const [isGenerating, setIsGenerating] = useState(false);
       const cvRef = useRef(null);
 
       useEffect(() => {
@@ -1082,14 +1098,78 @@
 
       const toggleTheme = () => setIsDark(!isDark);
 
-      const downloadPDF = () => {
-        // Ejecutamos la impresión nativa del navegador. 
-        // El CSS @media print se encargará de darle formato A4 y ocultar los botones.
-        window.print();
+      const downloadPDF = async () => {
+        const element = cvRef.current;
+        if (!element) return;
+
+        setIsGenerating(true);
+
+        // Ocultar elementos para el PDF
+        const actions = document.querySelector('.actions-container');
+        const watermark = document.querySelector('.creator-watermark');
+        if (actions) actions.style.opacity = '0';
+        if (watermark) watermark.style.opacity = '0';
+
+        try {
+          // Capturar el CV. Usamos un factor de escala para mejor calidad.
+          const canvas = await html2canvas(element, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: isDark ? '#0a0a0f' : '#f5f2ee', // Match current theme
+            logging: false
+          });
+
+          const imgData = canvas.toDataURL('image/png');
+          const { jsPDF } = window.jspdf;
+          
+          // Calculamos dimensiones para que encaje
+          const imgWidth = canvas.width;
+          const imgHeight = canvas.height;
+          
+          const pdf = new jsPDF({
+            orientation: imgWidth > imgHeight ? 'l' : 'p',
+            unit: 'px',
+            format: [imgWidth, imgHeight]
+          });
+
+          pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+          pdf.save(`${INFO.shortName.replace(/\s+/g, '_')}_CV.pdf`);
+
+        } catch (error) {
+          console.error("Error al generar PDF:", error);
+          alert("No se pudo generar el PDF. Por favor intenta de nuevo.");
+        } finally {
+          // Restaurar UI
+          if (actions) actions.style.opacity = '1';
+          if (watermark) watermark.style.opacity = '1';
+          setIsGenerating(false);
+        }
       };
 
       return (
         <>
+          <AnimatePresence>
+            {isGenerating && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="pdf-overlay"
+              >
+                <div style={{ textAlign: 'center' }}>
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                    style={{ fontSize: '2rem', marginBottom: '10px' }}
+                  >
+                    ⏳
+                  </motion.div>
+                  Generando tu CV...
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
